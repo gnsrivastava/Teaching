@@ -1,0 +1,88 @@
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# macOS thumbnails / metadata
+.Spotlight-V100
+.Trashes
+
+
+# =========================
+# Python
+# =========================
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type checking / linting caches
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Packaging / builds
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDE/editor
+.vscode/
+.idea/
+
+
+# =========================
+# MATLAB
+# =========================
+
+# Autosave / backup files
+*.asv
+*.m~
+*.autosave
+
+# MATLAB generated files
+*.mex*
+slprj/
+sccprj/
+codegen/
+
+# Simulink generated files
+*.slxc
+
+# MATLAB preferences / project metadata
+*.prj
+*.mlproj
+
+# MATLAB temporary files
+*.tmp
+
+
+# =========================
+# General temporary files
+# =========================
+*.log
+*.swp
+*.swo
+*~
