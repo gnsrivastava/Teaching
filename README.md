@@ -14,9 +14,10 @@ Lecture is intended to introduce students to graph convolutional networks (GCNs)
 │   │   ├── Graph_Neural_Net_BME_AI_PPI.m
 │   │   ├── graphConvLayer.m
 │   │   ├── ppi.mat
-│   │   └── seqfish.mat
+│   │   └── seqfish.mat.gz
 │   └── python
 │       ├── Graph_Neural_Net_BME_AI_2025_seqFISH.ipynb
 │       └── Graph_Neural_Net_BME_AI_PPI.ipynb
 └── README.md
 ```
+Matlab data file for ```seqfish``` can be extracted using following command ```gzip -d seqfish.mat.gz```
