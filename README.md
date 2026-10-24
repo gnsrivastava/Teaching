@@ -5,6 +5,7 @@ Lecture is intended to introduce students to graph convolutional networks (GCNs)
 
 
 ## Repository Organization
+```
 .
 ├── GCN
 │   ├── GraphLearning_Omics.pptx
@@ -18,4 +19,4 @@ Lecture is intended to introduce students to graph convolutional networks (GCNs)
 │       ├── Graph_Neural_Net_BME_AI_2025_seqFISH.ipynb
 │       └── Graph_Neural_Net_BME_AI_PPI.ipynb
 └── README.md
-
+```
