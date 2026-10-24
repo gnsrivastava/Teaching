@@ -1,5 +1,21 @@
 # Teaching
 
 Repository contains lectures and tutorials for GCN.
-
 Lecture is intended to introduce students to graph convolutional networks (GCNs) and their application in the field of omics. 
+
+
+## Repository Organization
+.
+├── GCN
+│   ├── GraphLearning_Omics.pptx
+│   ├── matlab
+│   │   ├── Graph_Neural_Net_BME_AI_2025_seqFISH.m
+│   │   ├── Graph_Neural_Net_BME_AI_PPI.m
+│   │   ├── graphConvLayer.m
+│   │   ├── ppi.mat
+│   │   └── seqfish.mat
+│   └── python
+│       ├── Graph_Neural_Net_BME_AI_2025_seqFISH.ipynb
+│       └── Graph_Neural_Net_BME_AI_PPI.ipynb
+└── README.md
+
