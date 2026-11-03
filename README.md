@@ -7,6 +7,8 @@ Lecture is intended to introduce students to graph convolutional networks (GCNs)
 ## Repository Organization
 ```
 .
+├── GAT
+│   └── Backpropagation_Drug_Discovery_BME_Tutorial.ipynb
 ├── GCN
 │   ├── GraphLearning_Omics.pptx
 │   ├── matlab
