@@ -117,7 +117,7 @@ end
 % Release the final training batch before evaluation.
 clear A X Y graphIdx loss grads;
 
-%% 6. Test Evaluation and Plot Matrix with Explicit Labels
+%% 6. Test Evaluation and Performance Metrics Summary
 scoresTest = predictGraphsBatched(params, testGraphs, batchSize);
 
 probsTest = extractdata( ...
@@ -128,59 +128,46 @@ probsTest = extractdata( ...
 yPredNum = reshape(yPredIdx - 1, [], 1);
 yTrueNum = reshape(double([testGraphs.y]), [], 1);
 
-% Compute Raw Confusion Matrix Values
-% [TN, FP; FN, TP]
+% Calculate Confusion Matrix Elements
+% C = [TN, FP; FN, TP]
 C = confusionmat(yTrueNum, yPredNum);
 TN = C(1,1); FP = C(1,2);
 FN = C(2,1); TP = C(2,2);
 
-% Calculate Performance Metrics
-rec0 = TN / (TN + FP) * 100;  % Recall / Specificity (Class 0)
-rec1 = TP / (TP + FN) * 100;  % Recall / Sensitivity (Class 1)
+% Calculate Metrics
+acc   = mean(yTrueNum == yPredNum);
+auc   = binaryAUC(yTrueNum, probsTest(2, :)');
 
-prec0 = TN / (TN + FN) * 100; % Precision / NPV (Class 0)
-prec1 = TP / (TP + FP) * 100; % Precision / PPV (Class 1)
+% Recall / Sensitivity / Specificity
+rec0_spec = TN / (TN + FP);  % Specificity (True Negative Rate)
+rec1_sens = TP / (TP + FN);  % Sensitivity / Recall (True Positive Rate)
 
-% Build Display Grid Including Summary Labels & Values
-displayMat = [
-    TN, FP, rec0;
-    FN, TP, rec1;
-    prec0, prec1, mean(yTrueNum == yPredNum) * 100
-    ];
+% Precision / Predictive Values
+prec0_npv = TN / (TN + FN);  % Negative Predictive Value (NPV)
+prec1_ppv = TP / (TP + FP);  % Precision / Positive Predictive Value (PPV)
 
-% Format Display Strings for Heatmap Cells
-textLabels = cell(3, 3);
-textLabels{1,1} = sprintf('TN: %d', TN);
-textLabels{1,2} = sprintf('FP: %d', FP);
-textLabels{1,3} = sprintf('Recall (Spec): %.1f%%', rec0);
+% Print Labeled Performance Report
+fprintf("\n==================================================\n");
+fprintf("      GAT Model — BACE Scaffold Test Metrics      \n");
+fprintf("==================================================\n");
+fprintf("Confusion Matrix Breakdown (n = %d):\n", numel(testGraphs));
+fprintf("  True Negatives  (TN): %d\n", TN);
+fprintf("  False Positives (FP): %d\n", FP);
+fprintf("  False Negatives (FN): %d\n", FN);
+fprintf("  True Positives  (TP): %d\n\n", TP);
 
-textLabels{2,1} = sprintf('FN: %d', FN);
-textLabels{2,2} = sprintf('TP: %d', TP);
-textLabels{2,3} = sprintf('Recall (Sens): %.1f%%', rec1);
+fprintf("Class 0 (Inactive) Performance:\n");
+fprintf("  Recall / Specificity:  %.1f%% (%d/%d)\n", rec0_spec * 100, TN, TN + FP);
+fprintf("  Precision / NPV:       %.1f%% (%d/%d)\n\n", prec0_npv * 100, TN, TN + FN);
 
-textLabels{3,1} = sprintf('Precision: %.1f%%', prec0);
-textLabels{3,2} = sprintf('Precision: %.1f%%', prec1);
-textLabels{3,3} = sprintf('Accuracy: %.1f%%', mean(yTrueNum == yPredNum) * 100);
+fprintf("Class 1 (Active) Performance:\n");
+fprintf("  Recall / Sensitivity:  %.1f%% (%d/%d)\n", rec1_sens * 100, TP, TP + FN);
+fprintf("  Precision / PPV:       %.1f%% (%d/%d)\n\n", prec1_ppv * 100, TP, TP + FP);
 
-% Plot Heatmap with Labeled Summary Row and Column
-figure("Color", "w");
-h = heatmap({'0 (Inactive)', '1 (Active)', 'Row Summary'}, ...
-    {'0 (Inactive)', '1 (Active)', 'Col Summary'}, ...
-    displayMat, ...
-    'DisplayData', textLabels, ...
-    'ColorbarVisible', 'off');
-
-h.Title = 'GAT Model — BACE Scaffold Test Set Metrics';
-h.XLabel = 'Predicted Class / Precision Summary';
-h.YLabel = 'True Class / Recall Summary';
-
-yProbActive = probsTest(2, :)';
-testAcc = mean(yTrueNum == yPredNum);
-testAUC = binaryAUC(yTrueNum, yProbActive);
-
-fprintf("\nTest Accuracy: %.3f | ROC-AUC: %.3f (n=%d)\n", ...
-    testAcc, testAUC, numel(testGraphs));
-
+fprintf("Overall Model Summary:\n");
+fprintf("  Accuracy:              %.1f%% (%d/%d)\n", acc * 100, TN + TP, numel(testGraphs));
+fprintf("  ROC-AUC:               %.3f\n", auc);
+fprintf("==================================================\n");
 %% 7. Inference on External DrugBank Molecules
 if isempty(drugbank)
     fprintf("\nNo DrugBank molecules were provided.\n");
